@@ -8,8 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 url = 'https://www.icourse163.org/'
 course_info = 'spoc/learn/UESTC-1471648183'
-# course_info = 'spoc/learn/UESTC-1471645192'
-homework_idx = 5
+homework_idx = 7
 review_num = 29
 comment = '答案正确, 过程详细, 完美契合得分点'
 
@@ -40,7 +39,8 @@ def load_cookies(driver: webdriver.Chrome):
 
 def login(driver: webdriver.Chrome):
     driver.implicitly_wait(10)
-    driver.find_element(By.XPATH, '//div[@class="_3uWA6" and @role="button"]').click()
+    driver.find_element(By.XPATH, 
+                        '//div[@class="_3uWA6" and @role="button"]').click()
     while True:
         match (ch := input('请登录:(yes/no/init/cookie)')):
             case 'yes': break
@@ -78,17 +78,20 @@ def find_homework_list(driver: webdriver.Chrome) -> list:
 
 def enter_peer_assessed_assignment(driver: webdriver.Chrome):
     elem = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, '//div[@class="tasklist j-tasklist"]//a[@data-status="1"]'))
+        EC.presence_of_element_located((By.XPATH, 
+            '//div[@class="tasklist j-tasklist"]//a[@data-status="1"]'))
     )
     elem.click()
 
 def find_all_options(driver: webdriver.Chrome) -> tuple:
     score_options_list = WebDriverWait(driver, 10).until(
-        EC.presence_of_all_elements_located((By.XPATH, '//div[@class="m-homework u-learn-modulewidth"]' + 
+        EC.presence_of_all_elements_located((By.XPATH, 
+                '//div[@class="m-homework u-learn-modulewidth"]' + 
                 '//div[@class="s"]//label[last()]//input[last()]'))
     )
     text_options_list = WebDriverWait(driver, 10).until(
-        EC.presence_of_all_elements_located((By.XPATH, '//div[@class="m-homework u-learn-modulewidth"]//textarea'))
+        EC.presence_of_all_elements_located((By.XPATH, 
+            '//div[@class="m-homework u-learn-modulewidth"]//textarea'))
     )
     return score_options_list, text_options_list
 
@@ -107,7 +110,8 @@ def run_enter_info_iter(driver: webdriver.Chrome):
         score_options_list, text_options_list = find_all_options(driver)
         enter_info(score_options_list, text_options_list)
         time.sleep(3)
-        driver.find_element(By.XPATH, '//a[@class="u-btn u-btn-default f-fl j-submitbtn"]').click()
+        driver.find_element(By.XPATH, 
+            '//a[@class="u-btn u-btn-default f-fl j-submitbtn"]').click()
         driver.implicitly_wait(10)
         driver.find_element(By.XPATH, '//a[@class="j-gotonext"]').click()
 
